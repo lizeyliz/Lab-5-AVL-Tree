@@ -23,10 +23,9 @@ public class ErnestMethods {
     public DatabaseNode rotateRight(DatabaseNode node) {
         DatabaseNode leftNode = node.left;
         DatabaseNode rightOfLeftNode = leftNode.right;
+        //Performing the rotation
         leftNode.right = node;
         node.left = rightOfLeftNode;
-        //leftNode.height = 1 + max(findHeight(leftNode.left), findHeight(leftNode.right));
-        //node.height = 1 + max(findHeight(node.left), findHeight(node.right));
         return leftNode;
    }
 }
