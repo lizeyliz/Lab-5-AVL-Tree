@@ -81,6 +81,23 @@ public class DatabaseMethods {
         return x;
     }//end rotateLeft
 
+    DatabaseNode rotateRight(DatabaseNode node) {
+        DatabaseNode leftNode = node.left;
+        DatabaseNode rightOfLeftNode = leftNode.right;
+        //Performing the rotation
+        leftNode.right = node;
+        node.left = rightOfLeftNode;
+        return leftNode;
+   }
+
+   public int max (int a, int b) {
+        if (a > b) {
+            return a;
+        } else {
+            return b;
+        }
+    }
+
     //iterative inorder traversal, returns array of nodes inorder
     public DatabaseNode[] inorderArray(DatabaseNode root) {
         //initialize array to store nodes (size of tree)
