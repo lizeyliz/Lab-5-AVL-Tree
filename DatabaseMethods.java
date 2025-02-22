@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Stack;
 
+import org.w3c.dom.Node;
+
 public class DatabaseMethods {
     DatabaseNode root; // top of tree
     ArrayList<Integer> listIDs = new ArrayList<>(); // stores all IDs
@@ -47,14 +49,25 @@ public class DatabaseMethods {
         return x;
     }//end rotateLeft
 
-    DatabaseNode rotateRight(DatabaseNode node) {
+    /*DatabaseNode rotateRight(DatabaseNode node) {
         DatabaseNode leftNode = node.left;
         DatabaseNode rightOfLeftNode = leftNode.right;
         //Performing the rotation
         leftNode.right = node;
         node.left = rightOfLeftNode;
         return leftNode;
-   }
+   }*/
+
+   //rotate given node to the right
+   Node rotateRight(Node y) {
+        Node x = y.left;
+        Node z = x.right;
+        x.right = y;
+        y.left = z;
+        updateHeight(y);
+        updateHeight(x);
+        return x;
+    }//end rotateRight
 
    public int max (int a, int b) {
         if (a > b) {
