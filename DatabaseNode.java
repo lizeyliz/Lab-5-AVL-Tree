@@ -15,6 +15,7 @@ public class DatabaseNode {
     //pointing to left and right
     DatabaseNode left;
     DatabaseNode right;
+    int height; //node's height in tree, will be updated
     
     //constructor
     public DatabaseNode(int idNum, String firstName, String lastName, String address, String city, String state, int zip, String email, String phNum){
