@@ -7,7 +7,6 @@ import java.util.Scanner;
 import java.util.Stack;
 
 public class DatabaseMethods {
-    static int height = -1; //height of node in tree
     DatabaseNode root; // top of tree
     ArrayList<Integer> listIDs = new ArrayList<>(); // stores all IDs
     Scanner scanner = new Scanner(System.in);
