@@ -98,6 +98,34 @@ public class DatabaseMethods {
         }
     }
 
+    //rebalances given node (will be passed in if node's balance
+    //value is less than -1 or more than 1)
+    DatabaseNode rebalance(DatabaseNode z) {
+        updateHeight(z); //make sure you have correct value before rebalancing
+        int balance = getBalance(z); //save the balance value of z
+        if (balance > 1) {//right heavy - shift z left
+            //Right-Right Rotation: 
+            //The unbalanced node and its right child node are both right-heavy.
+            if (height(z.right.right) > height(z.right.left)) {
+                z = rotateLeft(z);//single left rotation
+            } else {//Right-Left Rotation
+                //The unbalanced node is right heavy, and its right child node is left heavy.
+                z.right = rotateRight(z.right);//right rotation on right child node
+                z = rotateLeft(z);//left rotation on unbalanced node
+            }//end inner if/else
+        } else if (balance < -1) {//left heavy - shift z right
+            //Left-Left Rotation:
+            //The unbalanced node and its left child node are both left-heavy.
+            if (height(z.left.left) > height(z.left.right))
+                z = rotateRight(z);//single right rotation
+            else {//Left-Right Rotation:
+                z.left = rotateLeft(z.left);//rotate left child left
+                z = rotateRight(z);//right rotation on unbalanced node
+            }//end inner if/else
+        }//end outer if/else
+        return z;//return tree with z as root (now balanced)
+    }//end rebalance  
+
     //iterative inorder traversal, returns array of nodes inorder
     public DatabaseNode[] inorderArray(DatabaseNode root) {
         //initialize array to store nodes (size of tree)
