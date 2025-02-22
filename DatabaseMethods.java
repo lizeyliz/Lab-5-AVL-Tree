@@ -22,7 +22,7 @@ public class DatabaseMethods {
 
     // Helper function to find the height
     // of a given node in the binary tree
-    static int findHeightUtil(DatabaseNode root, int id){
+    /*static int findHeightUtil(DatabaseNode root, int id){
         // Base Case: tree is empty
         if (root == null) {
             return -1;
@@ -52,7 +52,23 @@ public class DatabaseMethods {
 
         // Return the height
         return height;
-    }//end findHeight
+    }//end findHeight*/
+    
+    //updates given node's height
+    void updateHeight(DatabaseNode n) {
+        //node height = 1(because node is 1 above children) + height of largest subtree (left or right)
+        n.height = 1 + Math.max(height(n.left), height(n.right));
+    }//end updateHeight
+
+    //returns given node's height
+    int height(DatabaseNode n) {
+        return n == null ? -1 : n.height; //return -1 if null, else return node height (has to be at least 0-root)
+    }//end height
+
+    //returns balance factor of a given node
+    int getBalance(DatabaseNode n) {
+        return (n == null) ? 0 : height(n.right) - height(n.left); //return zero if null, else return height of right subtree - height left
+    }//end get balance
 
     //iterative inorder traversal, returns array of nodes inorder
     public DatabaseNode[] inorderArray(DatabaseNode root) {
