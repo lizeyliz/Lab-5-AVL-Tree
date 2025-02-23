@@ -47,14 +47,25 @@ public class DatabaseMethods {
         return x;
     }//end rotateLeft
 
-    DatabaseNode rotateRight(DatabaseNode node) {
+    /*DatabaseNode rotateRight(DatabaseNode node) {
         DatabaseNode leftNode = node.left;
         DatabaseNode rightOfLeftNode = leftNode.right;
         //Performing the rotation
         leftNode.right = node;
         node.left = rightOfLeftNode;
         return leftNode;
-   }
+   }*/
+
+   //rotate given node to the right
+   DatabaseNode rotateRight(DatabaseNode y) {
+        DatabaseNode x = y.left;
+        DatabaseNode z = x.right;
+        x.right = y;
+        y.left = z;
+        updateHeight(y);
+        updateHeight(x);
+        return x;
+    }//end rotateRight
 
    public int max (int a, int b) {
         if (a > b) {

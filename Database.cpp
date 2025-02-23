@@ -21,6 +21,7 @@ class DatabaseNode {
     std::string phNum;
 
     public:
+    int height; //node's height in tree, will be updated
     //pointing to left and right
     DatabaseNode *left, *right;
     //constructor
@@ -106,6 +107,53 @@ class DatabaseMethods {
 public:
     std::list<int> idNums;
     DatabaseNode* root = nullptr;
+
+    //updates given node's height
+    void updateHeight(DatabaseNode* n) {
+        //node height = 1(because node is 1 above children) + height of largest subtree (left or right)
+        n->height = 1 + std::max(height(n->left), height(n->right));
+    }//end updateHeight
+
+    //returns given node's height
+    int height(DatabaseNode* n) {
+        return n == nullptr ? -1 : n->height; //return -1 if null, else return node height (has to be at least 0-root)
+    }//end height
+
+    //returns balance factor of a given node
+    int getBalance(DatabaseNode* n) {
+        return (n == nullptr) ? 0 : height(n->right) - height(n->left); //return zero if null, else return height of right subtree - height left
+    }//end get balance
+
+    //rotates a node to the left: takes in node to rotate
+    DatabaseNode* rotateLeft(DatabaseNode* y) { 
+        DatabaseNode* x = y->right; //x is y's original right child
+        DatabaseNode* z = x->left; //z is x's original left child (saving so isn't lost)
+        x->left = y; //x's new left child is y
+        y->right = z;//y's new right child is z (x's original left child)
+        //update heights of y and x (even though z moves the height stays same)
+        updateHeight(y);
+        updateHeight(x);
+        return x;
+    }//end rotateLeft
+
+    DatabaseNode* rotateRight(DatabaseNode* y) {
+        DatabaseNode* x = y->left;
+        DatabaseNode* z = x->right;
+        //Performing the rotation
+        x->right = y;
+        y->left = z;
+        updateHeight(y);
+        updateHeight(x);
+        return x;
+   }
+
+   int max (int a, int b) {
+        if (a > b) {
+            return a;
+        } else {
+            return b;
+        }
+    }
 
     // In-order traversal: takes in root
     void printInOrder(DatabaseNode* node) {
