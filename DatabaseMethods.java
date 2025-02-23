@@ -249,7 +249,7 @@ public class DatabaseMethods {
                 //create node to add to tree
                 DatabaseNode newNode = new DatabaseNode(idNum, firstName, lastName, address, city, state, zip, email, phNum);
                 //add it to tree
-                addNode(newNode);
+                addNode(rebalance(newNode));
             }//end while loop
             reader.close();
         } catch (FileNotFoundException e) {
@@ -351,9 +351,9 @@ public class DatabaseMethods {
     
         // Insert the new node in the correct position
         if (newNode.getID() < parent.getID()) {
-            parent.setLeftChild(newNode); // Set as left child
+            parent.setLeftChild(rebalance(newNode)); // Set as left child
         } else {
-            parent.setRightChild(newNode); // Set as right child
+            parent.setRightChild(rebalance(newNode)); // Set as right child
         }//end if/else
     
         // Success message
@@ -405,9 +405,9 @@ public class DatabaseMethods {
             }
             // Case 2: One child
             if (node.left == null) {
-                return node.right;
+                return rebalance(node.right);
             } else if (node.right == null) {
-                return node.left;
+                return rebalance(node.left);
             }
             // Case 3: Two children
             DatabaseNode successor = findMin(node.right);
@@ -418,7 +418,7 @@ public class DatabaseMethods {
         return rebalance(node);
     }//end delete
     // end IDNUM DELETE method //
-
+    
     // MODIFY method //
     public void modifyNode() {
         //get ID for node to modify
