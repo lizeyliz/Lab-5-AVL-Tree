@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Stack;
 
-import org.w3c.dom.Node;
-
 public class DatabaseMethods {
     DatabaseNode root; // top of tree
     ArrayList<Integer> listIDs = new ArrayList<>(); // stores all IDs
@@ -59,9 +57,9 @@ public class DatabaseMethods {
    }*/
 
    //rotate given node to the right
-   Node rotateRight(Node y) {
-        Node x = y.left;
-        Node z = x.right;
+   DatabaseNode rotateRight(DatabaseNode y) {
+        DatabaseNode x = y.left;
+        DatabaseNode z = x.right;
         x.right = y;
         y.left = z;
         updateHeight(y);
