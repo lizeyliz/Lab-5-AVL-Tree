@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Stack;
 
+import org.w3c.dom.Node;
+
 public class DatabaseMethods {
     DatabaseNode root; // top of tree
     ArrayList<Integer> listIDs = new ArrayList<>(); // stores all IDs
@@ -47,14 +49,25 @@ public class DatabaseMethods {
         return x;
     }//end rotateLeft
 
-    DatabaseNode rotateRight(DatabaseNode node) {
+    /*DatabaseNode rotateRight(DatabaseNode node) {
         DatabaseNode leftNode = node.left;
         DatabaseNode rightOfLeftNode = leftNode.right;
         //Performing the rotation
         leftNode.right = node;
         node.left = rightOfLeftNode;
         return leftNode;
-   }
+   }*/
+
+   //rotate given node to the right
+   Node rotateRight(Node y) {
+        Node x = y.left;
+        Node z = x.right;
+        x.right = y;
+        y.left = z;
+        updateHeight(y);
+        updateHeight(x);
+        return x;
+    }//end rotateRight
 
    public int max (int a, int b) {
         if (a > b) {
@@ -359,6 +372,7 @@ public class DatabaseMethods {
         // Success message
         System.out.println("Record added successfully.");
         System.out.println("Your ID number is: " + newNode.getID());
+        rebalance(newNode);
     }//end addNode
     
     // Main Method: Combines node creation and insertion
@@ -367,7 +381,7 @@ public class DatabaseMethods {
         addNode(newNode); // Insert the new node into the tree
     }//end addNode
 
-        // DELETE method //
+    // DELETE method //
     //deletes by ID number
     public void deleteNode() {
         System.out.print("Enter ID number of record you want to delete: ");
@@ -385,39 +399,36 @@ public class DatabaseMethods {
     }//end deleteNode
  
     //Recursive delete helper method
-    private DatabaseNode delete(DatabaseNode root, int idNum) {
+    private DatabaseNode delete(DatabaseNode node, int idNum) {
        // Base case: if the tree is empty
-        if (root == null) {
+        if (node == null) {
             return null;
         }
 
         // Traverse the tree to find the node to delete
-        if (idNum < root.getID()) {
-            root.left = delete(root.left, idNum);
-        } else if (idNum > root.getID()) {
-            root.right = delete(root.right, idNum);
+        if (idNum < node.getID()) {
+            node.left = delete(node.left, idNum);
+        } else if (idNum > node.getID()) {
+            node.right = delete(node.right, idNum);
         } else {
             // Found the node to delete
             // Case 1: No child (leaf node)
-            if (root.left == null && root.right == null) {
+            if (node.left == null && node.right == null) {
                 return null;
             }
             // Case 2: One child
-            if (root.left == null) {
-                return root.right;
-            } else if (root.right == null) {
-                return root.left;
+            if (node.left == null) {
+                return node.right;
+            } else if (node.right == null) {
+                return node.left;
             }
             // Case 3: Two children
-            DatabaseNode successor = findMin(root.right);
-            root.setID(successor.getID()); // Replace the value
-            root.right = delete(root.right, successor.getID()); // Remove successor
+            DatabaseNode successor = findMin(node.right);
+            node.setID(successor.getID()); // Replace the value
+            node.right = delete(node.right, successor.getID()); // Remove successor
             //System.out.println("Record deleted successfully.");
         }
-           //root = delete(root, idNum);
-       //System.out.println("Record deleted successfully.");
-
-        return root;
+        return rebalance(node);
     }//end delete
     // end IDNUM DELETE method //
 
