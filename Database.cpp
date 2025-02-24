@@ -258,15 +258,22 @@ public:
     }//end printPostOrder
 
     // Add a node to BST based on ID number
-    void addNode(DatabaseNode* newNode) {
-        if (root == nullptr) {
-            root = newNode;
+    DatabaseNode* addNode(DatabaseNode* node, DatabaseNode* newNode) {
+        if (node == nullptr) { //base case: empty tree
             std::cout << "Record added successfully.\n";
             std::cout << "Your ID number is: " << newNode->getIdNum() << "\n";
-            return;
-        }//end if/else
+            return newNode;
+        } else if(node->getIdNum() > newNode->getIdNum()) { //current > new
+            node->left = addNode(node->left, newNode); //add left recursively
+        } else if(node->getIdNum() < newNode->getIdNum()) { //current < new
+            node->right = addNode(node->right, newNode); //add right recursively
+        } else { //duplicate
+            std::cout << "Node is a duplicate and cannot be placed.\n";
+        }
 
-        DatabaseNode* current = root;
+        return rebalance(node); //rebalance tree
+
+        /*DatabaseNode* current = root;
         DatabaseNode* parent = nullptr;
 
         while (current != nullptr) {
@@ -288,13 +295,13 @@ public:
         }//end if/else
         std::cout << "Record added successfully.\n";
         std::cout << "Your ID number is: " << newNode->getIdNum() << "\n";
-        rebalance(newNode);
+        rebalance(newNode);*/
     }//end addNode
 
     // Main Method: Combines node creation and insertion
     void addNode() {
         DatabaseNode* newNode = createNode(); // Get user input to create a new node
-        addNode(newNode); // Insert the new node into the tree
+        root = addNode(root, newNode); // Insert the new node into the tree
     }//end addNode
     
     void userMethods(){
@@ -436,7 +443,7 @@ public:
                         idNums.push_front(ID); //add IDs to list
                         DatabaseNode* contact = new DatabaseNode(ID, firstName, lastName, address, city, state, zip, email, phNum);
                         //std::cout << contact->toString();
-                        addNode(contact);  
+                        root = addNode(root, contact);  
                     }//end if statements                
                 }//end while loop
             }//end while loop
