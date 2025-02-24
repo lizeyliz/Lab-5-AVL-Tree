@@ -36,6 +36,7 @@ class DatabaseNode {
         this->zip = zip;
         this->email = email;
         this->phNum = phNum;
+        this->height = 0; //initial height is 0
         //pointing to left and right
         this-> left = this->right = NULL;
     }//end constructor
@@ -111,7 +112,9 @@ public:
     //updates given node's height
     void updateHeight(DatabaseNode* n) {
         //node height = 1(because node is 1 above children) + height of largest subtree (left or right)
-        n->height = 1 + std::max(height(n->left), height(n->right));
+        if (n != nullptr) {
+            n->height = 1 + std::max(height(n->left), height(n->right));
+        }   
     }//end updateHeight
 
     //returns given node's height
