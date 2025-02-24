@@ -288,6 +288,7 @@ public:
         }//end if/else
         std::cout << "Record added successfully.\n";
         std::cout << "Your ID number is: " << newNode->getIdNum() << "\n";
+        rebalance(newNode);
     }//end addNode
 
     // Main Method: Combines node creation and insertion
