@@ -47,15 +47,6 @@ public class DatabaseMethods {
         return x;
     }//end rotateLeft
 
-    /*DatabaseNode rotateRight(DatabaseNode node) {
-        DatabaseNode leftNode = node.left;
-        DatabaseNode rightOfLeftNode = leftNode.right;
-        //Performing the rotation
-        leftNode.right = node;
-        node.left = rightOfLeftNode;
-        return leftNode;
-   }*/
-
    //rotate given node to the right
    DatabaseNode rotateRight(DatabaseNode y) {
         DatabaseNode x = y.left;
@@ -295,19 +286,19 @@ public class DatabaseMethods {
     }// end createNode method
 
     //adds new node to BST: takes in root and new node to be added
-    DatabaseNode addNode(DatabaseNode root, DatabaseNode newNode) {
-        if (root == null) {//new node is the root bc tree is empty
+    DatabaseNode addNode(DatabaseNode node, DatabaseNode newNode) {
+        if (node == null) {//if node is null, return newNode
             System.out.println("Record added successfully.");
             System.out.println("Your ID number is: " + newNode.getID());
             return newNode;
-        } else if (root.getID() > newNode.getID()) {//traverse left
-            root.left = addNode(root.left, newNode);
-        } else if (root.getID() < newNode.getID()) {//traverse right
-            root.right = addNode(root.right, newNode);
+        } else if (node.getID() > newNode.getID()) {//traverse left
+            node.left = addNode(node.left, newNode);
+        } else if (node.getID() < newNode.getID()) {//traverse right
+            node.right = addNode(node.right, newNode);
         } else {
             throw new RuntimeException("duplicate Key!");
         }//end if/else
-        return rebalance(root);
+        return rebalance(node); //rebalances each node
     }//end addNode
     
     // Main Method: Combines node creation and insertion
