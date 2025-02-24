@@ -155,6 +155,32 @@ public:
         }
     }
 
+    //rebalance method-rebalances the given node
+    DatabaseNode* rebalance(DatabaseNode* z) {
+        updateHeight(z);
+        int balance = getBalance(z); //balance factor of z
+        if (balance > 1) { //right heavy-shift z left
+            //right right rotation: both node and right child are right-heavy
+            if (height(z->right->right) > height(z->right->left)) { //right subtree is taller
+                z= rotateLeft(z); //single left  rotation 
+            } else { //right-left rotation
+                z->right = rotateRight(z->right); //right rotation on right child
+                z = rotateLeft(z); //left rotation on unbalanced node
+            }
+        } else if (balance < -1) { //left heavy - shift z right
+            //left left rotation: both node and left child are left-heavy
+            if (height(z->left->left) > height(z->left->right)) { //left subtree is taller
+                z = rotateRight(z); //single right rotation
+            } else { //left-right rotation
+                z->left = rotateLeft(z->left); //left rotation on left child
+                z = rotateRight(z); //right rotation on unbalanced node
+            }
+
+        }
+        return z;
+        
+    }
+
     // In-order traversal: takes in root
     void printInOrder(DatabaseNode* node) {
         if (node == nullptr) {
@@ -679,14 +705,14 @@ public:
             if(root->left == nullptr && root->right == nullptr) {
                 DatabaseNode* temp = root->right;
                 delete root;
-                return temp;
+                return rebalance(temp);
             }//end if statement
 
             //Case 2: only left child
             if(root->right == nullptr) {
                 DatabaseNode* temp = root->left;
                 delete root;
-                return temp;
+                return rebalance(temp);
             }//end if statement
 
             //when both children are present
@@ -694,7 +720,7 @@ public:
             root->setIdNum(successor->getIdNum()); //replace the value
             root->right = deleteNode(root->right, successor->getIdNum()); //remove succesor
         }//end if/else
-        return root;
+        return rebalance(root);
     }//end deleteNode
 };//end class DatabaseMethods
 
