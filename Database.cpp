@@ -139,6 +139,7 @@ public:
         return x;
     }//end rotateLeft
 
+    //rotates a node to the right: takes in node to rotate 
     DatabaseNode* rotateRight(DatabaseNode* y) {
         DatabaseNode* x = y->left;
         DatabaseNode* z = x->right;
@@ -148,15 +149,16 @@ public:
         updateHeight(y);
         updateHeight(x);
         return x;
-   }
+   } //end rotateRight
 
+    //returns max of two integers
    int max (int a, int b) {
         if (a > b) {
             return a;
         } else {
             return b;
         }
-    }
+    } //end of max
 
     //rebalance method-rebalances the given node
     DatabaseNode* rebalance(DatabaseNode* z) {
@@ -178,11 +180,9 @@ public:
                 z->left = rotateLeft(z->left); //left rotation on left child
                 z = rotateRight(z); //right rotation on unbalanced node
             }
-
         }
         return z;
-        
-    }
+    } //end rebalance
 
     // In-order traversal: takes in root
     void printInOrder(DatabaseNode* node) {
@@ -270,32 +270,7 @@ public:
         } else { //duplicate
             std::cout << "Node is a duplicate and cannot be placed.\n";
         }
-
         return rebalance(node); //rebalance tree
-
-        /*DatabaseNode* current = root;
-        DatabaseNode* parent = nullptr;
-
-        while (current != nullptr) {
-            parent = current;
-            if (newNode->getIdNum() < current->getIdNum()) {
-                current = current->left;  // Move left
-            } else if (newNode->getIdNum() > current->getIdNum()) {
-                current = current->right; // Move right
-            } else { // Duplicate node
-                std::cout << "Node is a duplicate and cannot be placed.\n";
-                return;
-            }//end if/else
-        }//end while loop
-
-        if (newNode->getIdNum() < parent->getIdNum()) {
-            parent->left = newNode;
-        } else {
-            parent->right = newNode;
-        }//end if/else
-        std::cout << "Record added successfully.\n";
-        std::cout << "Your ID number is: " << newNode->getIdNum() << "\n";
-        rebalance(newNode);*/
     }//end addNode
 
     // Main Method: Combines node creation and insertion
@@ -323,7 +298,6 @@ public:
             case 1: // ADD method
                 addNode();
                 break;
-            
             case 2: // DELETE method
                 deleteNode();
                 break;
@@ -344,10 +318,8 @@ public:
                 writeToFile();
                 std::cout << "Exiting program...\n";
                 exit(0);
-            
             default:
                 std::cout << "Invalid choice. Please try again.\n";    
-                   
             }//end switch/case
         } //end while loop
     } //end userMethods
