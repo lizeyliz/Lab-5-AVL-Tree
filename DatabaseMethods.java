@@ -287,18 +287,21 @@ public class DatabaseMethods {
 
     //adds new node to BST: takes in root and new node to be added
     DatabaseNode addNode(DatabaseNode node, DatabaseNode newNode) {
-        if (node == null) {//if node is null, return newNode
+        //regular BST add
+        if (node == null) {//BASE CASE: if node is null, return newNode
             System.out.println("Record added successfully.");
             System.out.println("Your ID number is: " + newNode.getID());
             return newNode;
-        } else if (node.getID() > newNode.getID()) {//traverse left
-            node.left = addNode(node.left, newNode);
-        } else if (node.getID() < newNode.getID()) {//traverse right
-            node.right = addNode(node.right, newNode);
+        } else if (node.getID() > newNode.getID()) {//current > new
+            node.left = addNode(node.left, newNode);//add left (recursive)
+        } else if (node.getID() < newNode.getID()) {//current < new
+            node.right = addNode(node.right, newNode);//add right(recurisive)
         } else {
             throw new RuntimeException("duplicate Key!");
         }//end if/else
-        return rebalance(node); //rebalances each node
+        //end BST add
+        //make into AVL tree
+        return rebalance(node); //rebalances each node in tree (except newNode)
     }//end addNode
     
     // Main Method: Combines node creation and insertion
