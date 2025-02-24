@@ -75,8 +75,7 @@ public class DatabaseMethods {
         }
     }
 
-    //rebalances given node (will be passed in if node's balance
-    //value is less than -1 or more than 1)
+    //rebalances given node
     DatabaseNode rebalance(DatabaseNode z) {
         updateHeight(z); //make sure you have correct value before rebalancing
         int balance = getBalance(z); //save the balance value of z
@@ -260,7 +259,7 @@ public class DatabaseMethods {
                 //create node to add to tree
                 DatabaseNode newNode = new DatabaseNode(idNum, firstName, lastName, address, city, state, zip, email, phNum);
                 //add it to tree
-                addNode(rebalance(newNode));
+                root = addNode(root, newNode);
             }//end while loop
             reader.close();
         } catch (FileNotFoundException e) {
@@ -294,89 +293,27 @@ public class DatabaseMethods {
 
         return new DatabaseNode (idNum, firstName, lastName, address, city, state, zip, email, phNum);
     }// end createNode method
-    
-    //checks which node has greater sort value
-    //returns greater node
-    public DatabaseNode getGreaterValue(DatabaseNode newNode, DatabaseNode currentNode){
-        //needs to check by char ASCII value, so convert to lowercase
-        String newLast = newNode.getLastName().toLowerCase();
-        String currentLast = currentNode.getLastName().toLowerCase();
-        String newFirst = newNode.getFirstName().toLowerCase();
-        String currentFirst = currentNode.getFirstName().toLowerCase();
 
-        //check last names first
-        //loop until reached last character of newnode last name
-        //breaks when it find a difference in characters
-        for (int i = 0; i < newLast.length(); i++){
-            if (newLast.charAt(i) < currentLast.charAt(i)){
-                return currentNode;
-            } else if (newLast.charAt(i) > currentLast.charAt(i)) {
-                return newNode;
-            }//end if/else
-        }//if you reach here, last names are same
-
-        //if last names are same, check first names
-        for (int i = 0; i < newFirst.length(); i++){
-            if (newFirst.charAt(i) < currentFirst.charAt(i)){
-                return currentNode;
-            } else if (newFirst.charAt(i) > currentFirst.charAt(i)) {
-                return newNode;
-            }
-        }//if you reach here, first names are same
-
-        //if first names are same, sort by ID
-        if (newNode.getID() < currentNode.getID()){
-            return currentNode;
-        } else {
-            return newNode;
-        }//end if/else
-    }//end getGreaterValue
-
-    //old addNode method that's sorted by idnumber
-    public void addNode(DatabaseNode newNode) {
-        // if tree is empty
-        if (root == null) {
-            root = newNode;
+    //adds new node to BST: takes in root and new node to be added
+    DatabaseNode addNode(DatabaseNode root, DatabaseNode newNode) {
+        if (root == null) {//new node is the root bc tree is empty
             System.out.println("Record added successfully.");
             System.out.println("Your ID number is: " + newNode.getID());
-            return; // end method here if root == null
-        }//end if
-    
-        // starting from the top
-        DatabaseNode current = root;
-        DatabaseNode parent = null;
-    
-        // while loop for placement if tree is not empty
-        while (current != null) {
-            parent = current;
-            if (newNode.getID() < current.getID()) {
-                current = current.getLeftChild(); // Move left
-            } else if (newNode.getID() > current.getID()) {
-                current = current.getRightChild(); // Move right
-            } else {
-                // Duplicate node found
-                System.out.println("Node is a duplicate and cannot be placed.");
-                return; // Exit the method if it's a duplicate
-            }
-        }
-    
-        // Insert the new node in the correct position
-        if (newNode.getID() < parent.getID()) {
-            parent.setLeftChild(rebalance(newNode)); // Set as left child
+            return newNode;
+        } else if (root.getID() > newNode.getID()) {//traverse left
+            root.left = addNode(root.left, newNode);
+        } else if (root.getID() < newNode.getID()) {//traverse right
+            root.right = addNode(root.right, newNode);
         } else {
-            parent.setRightChild(rebalance(newNode)); // Set as right child
+            throw new RuntimeException("duplicate Key!");
         }//end if/else
-    
-        // Success message
-        System.out.println("Record added successfully.");
-        System.out.println("Your ID number is: " + newNode.getID());
-        rebalance(newNode);
+        return rebalance(root);
     }//end addNode
     
     // Main Method: Combines node creation and insertion
     public void addNode() {
         DatabaseNode newNode = createNode(); // Get user input to create a new node
-        addNode(newNode); // Insert the new node into the tree
+        root = addNode(root, newNode); // Insert the new node into the tree
     }//end addNode
 
     // DELETE method //
@@ -483,6 +420,16 @@ public class DatabaseMethods {
         }
         System.out.println("Record modified successfully.");      
     }  // end MODIFY method //
+
+    public void printTree(DatabaseNode node, String prefix) {
+        if (node == null) {
+            System.out.println(prefix + "null");
+            return;
+        }
+        System.out.println(prefix + node.toString());
+        printTree(node.getLeftChild(), prefix + "L---");
+        printTree(node.getRightChild(), prefix + "R---");
+    }
 
     // print phonebook in traversal order user chooses
     public void printPhoneBook() {
