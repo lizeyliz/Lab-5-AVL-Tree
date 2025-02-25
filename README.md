@@ -7,7 +7,7 @@ This program creates an address book of people and their contact information tha
 
 ## Improvements
 This lab is adapted from Lab 4, Binary Search Tree https://github.com/lizeyliz/Lab-4-BST-.git
-We have changed the tree from a Binary Search Tree to an AVL tree, which is more efficient for searching because it is balanced.
+We have changed the tree from a Binary Search Tree to an AVL tree, which is more efficient because it is balanced.
 
 ## Extra Credit
 Coded lab in C++ as well as Java.
